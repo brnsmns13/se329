@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .btn-group-vertical {
+        display: block;
+        width: 100%;
+        padding: 10px 0px;
+    }
+</style>
+<h1>Respond to a Quiz</h1>
+<hr>
+<div class="row">
+	<div class="col-md-4">
+        <form method="post" action="/respond" id="response-form">
+            <label for="pin">Enter Quiz Pin</label>
+            <input name="pin" id="pin" class="form-control" type="number" value="{{pin_default}}">
+            <hr>
+            <div class="btn-group-vertical" data-toggle="buttons">
+            	<label class="btn btn-primary" for="a1">
+                    <input id="a1" type="radio" name="answer" value="0" autocomplete="off"> A
+                </label>
+            	<label class="btn btn-primary" for="a2">
+                    <input id="a2" type="radio" name="answer" value="1" autocomplete="off"> B
+                </label>
+            	<label class="btn btn-primary" for="a3">
+                    <input id="a3" type="radio" name="answer" value="2" autocomplete="off"> C
+                </label>
+            	<label class="btn btn-primary" for="a4">
+                    <input id="a4" type="radio" name="answer" value="3" autocomplete="off"> D
+                </label>
+            </div>
+            <button class="btn btn-default btn-block">Submit</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <h4>Current User: {{username}}</h4>
+        <h4>Submitted Response: {{current_answer}}</h4>
+    </div>
+</div>
+{% endblock %}
