@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Quizzes</h1>
+{% for quiz in quizzes %}
+	<form method="get" action="/start">
+		<p>{{quiz.name}}</p>
+		<input type="hidden" name="key" value="{{quiz.key}}"/>
+		<button class="btn btn-default">Start</button>
+	</form>
+{% endfor %}
+{% endblock %}

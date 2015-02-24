@@ -1,3 +1,4 @@
+import json
 import os
 
 from google.appengine.api import users
@@ -9,14 +10,12 @@ import webapp2
 ANSWERS = ['A', 'B', 'C', 'D']
 USER = 'test_user@iastate.edu'
 
-
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(
         os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
-
-
+	
 class MainPage(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('index.html')
@@ -49,10 +48,47 @@ class CreatePage(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('create.html')
         self.response.write(template.render())
-
-
+		
+	def post(self):
+		data = json.loads(self.request.body)
+		
+		quiz = Quiz()
+		for question in data['questionArr']
+				question = Question(content=question['question'],
+									answers={question['a'],question['b'],question['c'],question['d'],
+									correct_answer=question['correctAnswer'],
+									name=question['name'])
+				quiz.questions.append(question)
+		quiz.put()
+				
+class QuizPage(webapp2.RequestHandler):
+	def get(self):
+		quizzes = Quiz.query().fetch(10)
+		
+		template_values = {
+			'quizzes' : quizzes
+		}
+		
+		template = JINJA_ENVIRONMENT.get_template('quizzes.html')
+        self.response.write(template.render(template_values));
+	
+class StartPage(webapp2.RequestHandler):
+	def get(self):
+		quiz = self.request.get('key')
+		rand_code = randrange(1000,10000)
+		quiz.code=rand_code
+		template_values = {
+			'quizzes' : quizzes
+		}
+		
+		template = JINJA_ENVIRONMENT.get_template('start.html')
+        self.response.write(template.render(template_values));
+		
+			
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/respond', ResponsePage),
-    ('/create', CreatePage)
+    ('/create', CreatePage),
+	('/quizzes', QuizPage),
+	('/start', StartPage)
 ], debug=True)
