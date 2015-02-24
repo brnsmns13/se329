@@ -33,8 +33,9 @@ class ResponsePage(webapp2.RequestHandler):
         self.response.write(template.render(template_values));
 
     def post(self):
-        pin = int(self.request.get('pin'))
-        current_answer = int(self.request.get('answer'))
+        pin = int(self.request.get('pin', -1))
+        current_answer = int(self.request.get('answer', -1))
+
         template_values = {
             'username': USER,
             'pin_default': pin,
@@ -44,7 +45,14 @@ class ResponsePage(webapp2.RequestHandler):
         self.response.write(template.render(template_values));
 
 
+class CreatePage(webapp2.RequestHandler):
+    def get(self):
+        template = JINJA_ENVIRONMENT.get_template('create.html')
+        self.response.write(template.render())
+
+
 application = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/respond', ResponsePage)
+    ('/respond', ResponsePage),
+    ('/create', CreatePage)
 ], debug=True)
