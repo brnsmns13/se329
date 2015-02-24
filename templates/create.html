@@ -1,4 +1,60 @@
 {% extends "base.html" %}
 {% block content %}
+<script type="text/javascript" src="../static/js/quiz.js"></script>
 <h1>Create Quiz</h1>
+<form id="form_975120" class="appnitro"  method="post" action="">
+					<div class="form_description">
+			<h2>Add Question</h2>
+			<p>Question to add</p>
+		</div>						
+			<ul >
+			
+					<li id="li_1" >
+		<label class="description" for="element_1">Question </label>
+		<div>
+			<input id="element_1" name="element_1" class="element text medium" type="text" maxlength="255" value=""/> 
+		</div> 
+		</li>		<li id="li_2" >
+		<label class="description" for="element_2">Answer A </label>
+		<div>
+			<input id="element_2" name="element_2" class="element text medium" type="text" maxlength="255" value=""/> 
+		</div> 
+		</li>		<li id="li_3" >
+		<label class="description" for="element_3">Answer B </label>
+		<div>
+			<input id="element_3" name="element_3" class="element text medium" type="text" maxlength="255" value=""/> 
+		</div> 
+		</li>		<li id="li_4" >
+		<label class="description" for="element_4">Answer C </label>
+		<div>
+			<input id="element_4" name="element_4" class="element text medium" type="text" maxlength="255" value=""/> 
+		</div> 
+		</li>		<li id="li_5" >
+		<label class="description" for="element_5">Answer D </label>
+		<div>
+			<input id="element_5" name="element_5" class="element text medium" type="text" maxlength="255" value=""/> 
+		</div> 
+		</li>		<li id="li_6" >
+		<label class="description" for="element_6">Correct Answer </label>
+		<span>
+			<input id="element_6_1" name="element_6" class="element radio" type="radio" value="1" />
+<label class="choice" for="element_6_1">A</label>
+<input id="element_6_2" name="element_6" class="element radio" type="radio" value="2" />
+<label class="choice" for="element_6_2">B</label>
+<input id="element_6_3" name="element_6" class="element radio" type="radio" value="3" />
+<label class="choice" for="element_6_3">C</label>
+<input id="element_6_4" name="element_6" class="element radio" type="radio" value="4" />
+<label class="choice" for="element_6_4">D</label>
+
+		</span> 
+		</li>
+			
+					<li class="buttons">
+			    <input type="hidden" name="form_id" value="975120" />
+			    
+				<input class="button" name="submit" type="submit" value="Add Question" onclick="return getFormData()" />
+				<input class="button" name="Finish" type="submit" value="Finish" onclick="toJSON()" />
+		</li>
+			</ul>
+		</form>
 {% endblock %}
