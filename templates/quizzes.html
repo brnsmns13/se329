@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Quizzes</h1>
-{% for quiz in quizzes %}
-	<form method="get" action="/start">
-		<p>{{quiz.name}}</p>
-		<input type="hidden" name="key" value="{{quiz.key}}"/>
-		<button class="btn btn-default">Start</button>
-	</form>
-{% endfor %}
+<div class="row">
+	<div class="col-md-4">
+        <ul class="list-group">
+            {% for quiz in quizzes %}
+                <li class="list-group-item">
+                    <span class="badge">Start</span>
+                    {{quiz.name}}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-4">
+    </div>
+</div>
 {% endblock %}
