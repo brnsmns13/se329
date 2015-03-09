@@ -1,15 +1,17 @@
 # Contact Information
 ### Project 2
-| Name | Username | Email | Phone |
-| ---- | -------- | ----- | ----- |
+| Name | Position | Username | Email | Phone |
+| ---- | -------- | -------- | ----- | ----- |
+| Zachary Belloma | ??? | zbelloma | zbelloma@iastate.edu | ??? |
 | Tyler Cobb | ??? | Tcobbs72 | tjcobb@iastate.edu | 612-963-1237 |
+| William Park | ??? | wipark93 | wipark@iastate.edu | ??? |
 | Brian Simons | ??? | brnsmns13 | bcsimons@iastate.edu | 319-651-0782 |
 
 ### Project 3
 | Name | Position | Username | Email | Phone |
 | ---- | -------- | -------- | ----- | ----- |
 | Tyler Cobb | Systems Engineer | Tcobbs72 | tjcobb@iastate.edu | 612-963-1237 |
-| Robert Kloster | Project Manager | ??? | rkloster@iastate.edu | 515-720-5986 |
+| Robert Kloster | Project Manager | RobertKloster | rkloster@iastate.edu | 515-720-5986 |
 | Branden Lange | Quality Control | CivBase | blange@iastate.edu | 515-975-7491 |
 | Brian Simons | Architect / Developer | brnsmns13 | bcsimons@iastate.edu | 319-651-0782 |
 
