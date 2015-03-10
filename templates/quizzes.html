@@ -1,18 +1,21 @@
 {% extends "base.html" %}
+
+{% block title %}Quizzes{% endblock %}
+
 {% block content %}
-<h1>Quizzes</h1>
-<div class="row">
-	<div class="col-md-4">
-        <ul class="list-group">
-            {% for quiz in quizzes %}
-                <li class="list-group-item">
-                    <span class="badge">Start</span>
-                    {{quiz.name}}
-                </li>
-            {% endfor %}
-        </ul>
+    <h1>Quizzes</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group">
+                {% for quiz in quizzes %}
+                    <li class="list-group-item">
+                        <span class="badge">Start</span>
+                        {{quiz.name}}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-4">
+        </div>
     </div>
-    <div class="col-md-4">
-    </div>
-</div>
 {% endblock %}

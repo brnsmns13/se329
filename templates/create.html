@@ -1,61 +1,66 @@
 {% extends "base.html" %}
 
-{% block head %}
-<script src="static/js/quiz.js"></script>
+{% block title %}Create a Quiz{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="static/js/quiz.js"></script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        #ca {
+            margin: 10px 0px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<style>
+    <h1>Create a Quiz</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <form method="get" action="/quizzes" id="response-form">
+                <label for="element_1">Enter Question</label>
+                <input name="element_1" id="element_1" class="form-control" type="text">
+                <hr>
+                <div class="form-group">
+                    <label for="element_2">Question 1</label>
+                    <input type="text" class="form-control" id="element_2" placeholder="Question 1">
+                </div>
+                <div class="form-group">
+                    <label for="element_3">Question 2</label>
+                    <input type="text" class="form-control" id="element_3" placeholder="Question 2">
+                </div>
+                <div class="form-group">
+                    <label for="element_4">Question 3</label>
+                    <input type="text" class="form-control" id="element_4" placeholder="Question 3">
+                </div>
+                <div class="form-group">
+                    <label for="element_5">Question 4</label>
+                    <input type="text" class="form-control" id="element_5" placeholder="Question 4">
+                </div>
 
-#ca {
-    margin: 10px 0px;
-}
-
-</style>
-<h1>Create Quiz</h1>
-<hr>
-<div class="row">
-	<div class="col-md-4">
-        <form method="get" action="/quizzes" id="response-form">
-            <label for="element_1">Enter Question</label>
-            <input name="element_1" id="element_1" class="form-control" type="text"> 
-            <hr>
-            <div class="form-group">
-                <label for="element_2">Question 1</label>
-                <input type="text" class="form-control" id="element_2" placeholder="Question 1">
-            </div>
-            <div class="form-group">
-                <label for="element_3">Question 2</label>
-                <input type="text" class="form-control" id="element_3" placeholder="Question 2">
-            </div>
-            <div class="form-group">
-                <label for="element_4">Question 3</label>
-                <input type="text" class="form-control" id="element_4" placeholder="Question 3">
-            </div>
-            <div class="form-group">
-                <label for="element_5">Question 4</label>
-                <input type="text" class="form-control" id="element_5" placeholder="Question 4">
-            </div>
-            <h4>Correct Answer</h4>
-            <div id="ca" class="btn-group btn-group-justified" data-toggle="buttons">
-            	<label class="btn btn-primary" for="a1">
-                    <input id="a1" type="radio" name="answer" value="1" autocomplete="off"> A
-                </label>
-            	<label class="btn btn-primary" for="a2">
-                    <input id="a2" type="radio" name="answer" value="2" autocomplete="off"> B
-                </label>
-            	<label class="btn btn-primary" for="a3">
-                    <input id="a3" type="radio" name="answer" value="3" autocomplete="off"> C
-                </label>
-            	<label class="btn btn-primary" for="a4">
-                    <input id="a4" type="radio" name="answer" value="4" autocomplete="off"> D
-                </label>
-            </div>
-            <button class="btn btn-success" onclick="return getFormData();">Add Question</button>
-            <button class="btn btn-primary" onclick="return toJSON();">Submit Quiz</button>
-        </form>
-    </div>
-    <div class="col-md-4">
-        <h4>Current User: {{username}}</h4>
+                <h4>Correct Answer</h4>
+                <div id="ca" class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-primary" for="a1">
+                        <input id="a1" type="radio" name="answer" value="1" autocomplete="off"> A
+                    </label>
+                    <label class="btn btn-primary" for="a2">
+                        <input id="a2" type="radio" name="answer" value="2" autocomplete="off"> B
+                    </label>
+                    <label class="btn btn-primary" for="a3">
+                        <input id="a3" type="radio" name="answer" value="3" autocomplete="off"> C
+                    </label>
+                    <label class="btn btn-primary" for="a4">
+                        <input id="a4" type="radio" name="answer" value="4" autocomplete="off"> D
+                    </label>
+                </div>
+                <button class="btn btn-success" onclick="return getFormData();">Add Question</button>
+                <button class="btn btn-primary" onclick="return toJSON();">Submit Quiz</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <h4>Current User: {{username}}</h4>
+        </div>
     </div>
 {% endblock %}

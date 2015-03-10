@@ -2,9 +2,9 @@ from google.appengine.ext import ndb
 
 
 class Question(ndb.Model):
-    content=ndb.StringProperty(indexed=False)
-    answers=ndb.JsonProperty(indexed=False)
-    correct_answer=ndb.StringProperty(indexed=False)
+    content = ndb.StringProperty(indexed=False)
+    answers = ndb.JsonProperty(indexed=False)
+    correct_answer = ndb.StringProperty(indexed=False)
 
 
 class Quiz(ndb.Model):
