@@ -2,10 +2,10 @@
 ### Project 2
 | Name | Position | Username | Email | Phone |
 | ---- | -------- | -------- | ----- | ----- |
-| Zachary Belloma | ??? | zbelloma | zbelloma@iastate.edu | ??? |
-| Tyler Cobb | ??? | Tcobbs72 | tjcobb@iastate.edu | 612-963-1237 |
-| William Park | ??? | wipark93 | wipark@iastate.edu | ??? |
-| Brian Simons | ??? | brnsmns13 | bcsimons@iastate.edu | 319-651-0782 |
+| Zachary Belloma | Architect / Developer | zbelloma | zbelloma@iastate.edu | ??? |
+| Tyler Cobb | Project Manager | Tcobbs72 | tjcobb@iastate.edu | 612-963-1237 |
+| William Park | Systems Engineer | wipark93 | wipark@iastate.edu | ??? |
+| Brian Simons | Quality Control | brnsmns13 | bcsimons@iastate.edu | 319-651-0782 |
 
 ### Project 3
 | Name | Position | Username | Email | Phone |
@@ -17,7 +17,7 @@
 
 # Resources
 ### Project 2
-- [Team Documents](???)
+- [Team Documents](https://drive.google.com/a/iastate.edu/folderview?id=0B9MmnYHmkjD2fjZEQWdST05CQmIwMm5yaGRldTNTdHJDbW1sYmszWWp3VUdSMVVFeEUxcGs&usp=sharing)
 
 ### Development Tools
 - [draw.io](https://www.draw.io/) - Flowchart and UML diagram creation web application
