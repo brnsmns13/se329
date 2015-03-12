@@ -59,7 +59,7 @@ class CreatePage(webapp2.RequestHandler):
         logging.info(self.request.body)
         data = json.loads(self.request.body)
         quiz = Quiz()
-        for question in data['questionArr']:
+        for question in data['questions']:
             question = Question(
                 content=question['question'],
                 answers=[question['a'], question['b'],
@@ -68,7 +68,7 @@ class CreatePage(webapp2.RequestHandler):
 
             quiz.questions.append(question)
 
-        quiz.name = "Quiz 1"
+        quiz.name = data['name']
         quiz.put()
 
 

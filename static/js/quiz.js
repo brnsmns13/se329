@@ -23,21 +23,37 @@ function create() {
 }
 
 function getFormData(){
-	var question = document.getElementById("question").value;
-	var a = document.getElementById("a1").value;
-	var b = document.getElementById("a2").value;
-	var c = document.getElementById("a3").value;
-	var d = document.getElementById("a4").value;
+    // Pull the inputs from the document
+	var question = document.getElementById("question");
+	var a = document.getElementById("a1");
+	var b = document.getElementById("a2");
+	var c = document.getElementById("a3");
+	var d = document.getElementById("a4");
 	var correct = 'a';
 	
-	var newQuestion = quizQuestion(question, a,b,c,d, correct);
+    // Create a new question and add it to the array
+	var newQuestion = quizQuestion(
+        question.value,
+        a.value,
+        b.value,
+        c.value,
+        d.value,
+        correct);
 	questionArr.push(newQuestion);
 
+    // Add question title to list for user
     var q_list = document.getElementById('question-list');
     var li = document.createElement('li');
     li.className = "list-group-item";
-    li.appendChild(document.createTextNode(question));
+    li.appendChild(document.createTextNode(question.value));
     q_list.appendChild(li);
+
+    // Clear the fields
+    question.value = "";
+    a.value = "";
+    b.value = "";
+    c.value = "";
+    d.value = "";
 
 	return false;
 }
@@ -49,9 +65,12 @@ function clearArr(){
 
 function toJSON(){
 	var data = {
-		"questionArr" : questionArr
+		"questions" : questionArr,
+        "name": quizName
 	};
 	
 	$.post("/create", JSON.stringify(data));
+
+    // If we let the post redirect then we can fix the reload error
     window.location.replace("/quizzes");
 }
