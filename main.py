@@ -97,6 +97,20 @@ class StartPage(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
+class PresentAPI(webapp2.RequestHandler):
+    def get(self):
+        quiz_key = self.request.get('quiz')
+        question_number = self.request.get('question')
+        quiz = Quiz.get_by_id(quiz_key)
+        try:
+            question = quiz.questions[int(question_number)]
+        except IndexError:
+            self.response.write('invalid question number')
+            return
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(question.as_json())
+
+
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/respond', ResponsePage),
