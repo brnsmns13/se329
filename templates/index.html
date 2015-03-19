@@ -3,5 +3,13 @@
 {% block title %}Index{% endblock %}
 
 {% block content %}
-    <h1>Hello World!</h1>
+    <h1>Dashboard</h1>
+    <hr>
+    <div class="col-md-4 col-md-offset-4">
+        {% if user %}
+        <h3>Welcome {{ user.nickname() }}</h3>
+        {% else %}
+
+        {% endif %}
+    </div>
 {% endblock %}

@@ -24,7 +24,12 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class MainPage(webapp2.RequestHandler):
     def get(self):
         template = JINJA_ENVIRONMENT.get_template('index.html')
-        self.response.write(template.render())
+        template_values = {
+            'login_url': users.create_login_url(self.request.uri),
+            'logout_url': users.create_logout_url(self.request.uri),
+            'user': users.get_current_user()
+        }
+        self.response.write(template.render(template_values))
 
 
 class ResponsePage(webapp2.RequestHandler):
