@@ -11,7 +11,6 @@ from google.appengine.ext import ndb
 from models import *
 
 
-ANSWERS = [None, 'A', 'B', 'C', 'D']
 USER = 'test_user@iastate.edu'
 
 
@@ -39,12 +38,12 @@ class ResponsePage(webapp2.RequestHandler):
 
     def post(self):
         pin = int(self.request.get('pin', -1))
-        current_answer = int(self.request.get('answer', -1))
+        current_answer = self.request.get('answer')
 
         template_values = {
             'username': USER,
             'pin_default': pin,
-            'current_answer': ANSWERS[current_answer]
+            'current_answer': current_answer
         }
         template = JINJA_ENVIRONMENT.get_template('respond.html')
         self.response.write(template.render(template_values))
@@ -59,12 +58,11 @@ class CreatePage(webapp2.RequestHandler):
         logging.info(self.request.body)
         data = json.loads(self.request.body)
         quiz = Quiz()
-        for question in data['questions']:
+        for q in data['questions']:
             question = Question(
-                content=question['question'],
-                answers=[question['a'], question['b'],
-                         question['c'], question['d']],
-                correct_answer=question['correctAnswer'])
+                question=q['question'],
+                answers=q['answers'],
+                correct_answer=q['correctAnswer'])
 
             quiz.questions.append(question)
 
@@ -104,11 +102,13 @@ class PresentAPI(webapp2.RequestHandler):
         quiz = Quiz.get_by_id(quiz_key)
         try:
             question = quiz.questions[int(question_number)]
+
         except IndexError:
             self.response.write('invalid question number')
             return
+
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(question.as_json())
+        self.response.write(json.dumps(question.dict))
 
 
 application = webapp2.WSGIApplication([

@@ -1,45 +1,70 @@
 
-var questionArr = [];
 var quizName = '';
-
-function quizQuestion(q,a,b,c,d,ans){
-	var question = {};
-	question.question = q;
-	question.a = a;
-	question.b = b;
-	question.c = c;
-	question.d = d;
-	question.correctAnswer = ans;
-	return question;
-}
+var questions = [];
+var answerIDs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+var nextAnswer = 0;
 
 function create() {
     quizName = document.getElementById("quiz-name").value;
     document.getElementById("quiz-name-view").style.display = "none";
     document.getElementById("quiz-questions-view").style.display = "";
     document.getElementById("quiz-name-header").textContent = "Quiz: " + quizName;
+    addAnswer();
+    return false;
+}
+
+function addAnswer() {
+    if (nextAnswer >= answerIDs.length) {
+        alert("Too many answers!");
+        return false;
+    }
+
+    var answerID = answerIDs[nextAnswer];
+    nextAnswer += 1;
+    $('#answer-list').append(
+        '<div class="form-group">\n' +
+        '<label for="answer' + answerID + '">Answer ' + answerID +
+        '</label>\n' +
+        '<input type="text" class="form-control answer" ' +
+        'placeholder="Answer ' + answerID + '"></input>\n' +
+        '</div>\n');
+
+    $('#answer-selector').append(
+        '<label class="btn btn-primary" for="correct' + nextAnswer + '">\n' +
+        '<input type="radio" name="correct-answer" value="' + answerID + '" ' +
+        'autocomplete="off"></input> ' + answerID + '\n' +
+        '</label>');
 
     return false;
 }
 
-function getFormData(){
+function addQuestion() {
     // Pull the inputs from the document
-	var question = document.getElementById("question");
-	var a = document.getElementById("a1");
-	var b = document.getElementById("a2");
-	var c = document.getElementById("a3");
-	var d = document.getElementById("a4");
-	var correct = 'a';
-	
-    // Create a new question and add it to the array
-	var newQuestion = quizQuestion(
-        question.value,
-        a.value,
-        b.value,
-        c.value,
-        d.value,
-        correct);
-	questionArr.push(newQuestion);
+	var questionField = $('#question');
+    var question = questionField.val();
+
+    var answers = {};
+    var answerList = $('#answer-list');
+	answerList.find('.answer').each(function(index, field) {
+        answers[answerIDs[index]] = $(field).val();
+        console.log(answers[answerIDs[index]]);
+    });
+
+    var correctList = $('#answer-selector');
+	var correctField = correctList.find(
+        "input:radio[name ='correct-answer']:checked");
+
+    if (!correctField) {
+        alert('Select a correct answer!');
+        return;
+    }
+
+    var correct = correctField.val();
+	questions.push({
+        question: question,
+        answers: answers,
+        correctAnswer: correct
+    });
 
     // Add question title to list for user
     var q_list = document.getElementById('question-list');
@@ -49,23 +74,17 @@ function getFormData(){
     q_list.appendChild(li);
 
     // Clear the fields
-    question.value = "";
-    a.value = "";
-    b.value = "";
-    c.value = "";
-    d.value = "";
-
-	return false;
+    questionField.val('');
+    answerList.empty();
+    correctList.empty();
+    nextAnswer = 0;
+    addAnswer();
+    return false;
 }
 
-function clearArr(){
-	questionArr = [];
-	alert("cleared");
-}
-
-function toJSON(){
+function submitQuiz() {
 	var data = {
-		"questions" : questionArr,
+		"questions" : questions,
         "name": quizName
 	};
 	

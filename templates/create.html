@@ -8,7 +8,7 @@
 
 {% block style %}
     <style>
-        #ca {
+        #answer-selector {
             margin: 10px 0px;
         }
     </style>
@@ -29,47 +29,21 @@
             </div>
         </div>
         <div id="quiz-questions-view" style="display:none;">
-            <div  class="col-md-4">
+            <div class="col-md-4">
                 <form method="get" action="/quizzes" id="response-form">
                     <label for="question">Enter Question</label>
                     <input name="question" id="question" class="form-control" type="text">
                     <hr>
-                    <div class="form-group">
-                        <label for="a1">Answer 1</label>
-                        <input type="text" class="form-control" id="a1" placeholder="Answer 1">
-                    </div>
-                    <div class="form-group">
-                        <label for="a2">Answer 2</label>
-                        <input type="text" class="form-control" id="a2" placeholder="Answer 2">
-                    </div>
-                    <div class="form-group">
-                        <label for="a3">Answer 3</label>
-                        <input type="text" class="form-control" id="a3" placeholder="Answer 3">
-                    </div>
-                    <div class="form-group">
-                        <label for="a4">Answer 4</label>
-                        <input type="text" class="form-control" id="a4" placeholder="Answer 4">
-                    </div>
-
+                    <div id="answer-list"></div>
                     <h4>Correct Answer</h4>
-                    <div id="ca" class="btn-group btn-group-justified" data-toggle="buttons">
-                        <label class="btn btn-primary" for="a1">
-                            <input id="ca1" type="radio" name="answer" value="1" autocomplete="off"> A
-                        </label>
-                        <label class="btn btn-primary" for="a2">
-                            <input id="ca2" type="radio" name="answer" value="2" autocomplete="off"> B
-                        </label>
-                        <label class="btn btn-primary" for="a3">
-                            <input id="ca3" type="radio" name="answer" value="3" autocomplete="off"> C
-                        </label>
-                        <label class="btn btn-primary" for="a4">
-                            <input id="ca4" type="radio" name="answer" value="4" autocomplete="off"> D
-                        </label>
-                    </div>
-                    <button class="btn btn-success" onclick="return getFormData();">
-                        Add Question
+                    <div id="answer-selector" class="btn-group btn-group-justified" data-toggle="buttons"></div>
+                    <button class="btn btn-success" onclick="return addAnswer();">
+                        <span class="glyphicon glyphicon-plus"></span> Add Another Answer
                     </button>
-                    <button class="btn btn-primary" onclick="return toJSON();">
+                    <button class="btn btn-success" onclick="return addQuestion();">
+                        <span class="glyphicon glyphicon-plus"></span> Add Another Question
+                    </button>
+                    <button class="btn btn-primary" onclick="return submitQuiz();">
                         Submit Quiz
                     </button>
                 </form>

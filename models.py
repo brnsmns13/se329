@@ -1,16 +1,17 @@
-import json
-
 from google.appengine.ext import ndb
 
 
 class Question(ndb.Model):
-    content = ndb.StringProperty(indexed=False)
+    question = ndb.StringProperty(indexed=False)
     answers = ndb.JsonProperty(indexed=False)
     correct_answer = ndb.StringProperty(indexed=False)
 
-    def as_json(self):
-        data = {'question': self.content, 'answers': self.answers}
-        return json.dumps(data)
+    @property
+    def dict(self):
+        return {
+            'question': self.question,
+            'answers': self.answers
+        }
 
 
 class Quiz(ndb.Model):
