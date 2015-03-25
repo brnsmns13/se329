@@ -47,31 +47,33 @@ function addQuestion() {
     var answerList = $('#answer-list');
 	answerList.find('.answer').each(function(index, field) {
         answers[answerIDs[index]] = $(field).val();
-        console.log(answers[answerIDs[index]]);
     });
 
     var correctList = $('#answer-selector');
 	var correctField = correctList.find(
         "input:radio[name ='correct-answer']:checked");
 
-    if (!correctField) {
+    var correct = correctField.val();
+    if (!correct) {
         alert('Select a correct answer!');
-        return;
+        return false;
     }
 
-    var correct = correctField.val();
-	questions.push({
+    var newQuestion = {
         question: question,
         answers: answers,
         correctAnswer: correct
-    });
+    };
+	questions.push(newQuestion);
 
     // Add question title to list for user
-    var q_list = document.getElementById('question-list');
+    var qList = document.getElementById('question-list');
     var li = document.createElement('li');
     li.className = "list-group-item";
-    li.appendChild(document.createTextNode(question.value));
-    q_list.appendChild(li);
+    li.appendChild(document.createTextNode(
+        newQuestion.question + ' (' + correct + ': ' + answers[correct] + ')'));
+
+    qList.appendChild(li);
 
     // Clear the fields
     questionField.val('');
