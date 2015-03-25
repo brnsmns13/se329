@@ -2,9 +2,16 @@ from google.appengine.ext import ndb
 
 
 class Question(ndb.Model):
-    content = ndb.StringProperty(indexed=False)
+    question = ndb.StringProperty(indexed=False)
     answers = ndb.JsonProperty(indexed=False)
     correct_answer = ndb.StringProperty(indexed=False)
+
+    @property
+    def dict(self):
+        return {
+            'question': self.question,
+            'answers': self.answers
+        }
 
 
 class Quiz(ndb.Model):
