@@ -21,43 +21,54 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 
 
-class MainPage(webapp2.RequestHandler):
-    def get(self):
-        template = JINJA_ENVIRONMENT.get_template('index.html')
-        template_values = {
+class BaseRequestHandler(webapp2.RequestHandler):
+    def __init__(self, request=None, response=None):
+        super(BaseRequestHandler, self).__init__(request, response)
+        self.template_name = None
+        self.template_values = {}
+
+    def complete_request(self):
+        template = JINJA_ENVIRONMENT.get_template(self.template_name)
+        self.template_values.update({
             'login_url': users.create_login_url(self.request.uri),
             'logout_url': users.create_logout_url(self.request.uri),
             'user': users.get_current_user()
-        }
-        self.response.write(template.render(template_values))
+        })
+        self.response.write(template.render(self.template_values))
 
 
-class ResponsePage(webapp2.RequestHandler):
+
+class MainPage(BaseRequestHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('respond.html')
-        template_values = {
-            'username': USER,
+        self.template_name = 'index.html'
+        self.complete_request()
+
+
+class ResponsePage(BaseRequestHandler):
+    def get(self):
+        self.template_name = 'respond.html'
+        self.template_values = {
             'pin_default': 0
         }
-        self.response.write(template.render(template_values))
+        self.complete_request()
 
     def post(self):
+        self.template_name = 'respond.html'
         pin = int(self.request.get('pin', -1))
         current_answer = self.request.get('answer')
 
-        template_values = {
+        self.template_values = {
             'username': USER,
             'pin_default': pin,
             'current_answer': current_answer
         }
-        template = JINJA_ENVIRONMENT.get_template('respond.html')
-        self.response.write(template.render(template_values))
+        self.complete_request()
 
 
-class CreatePage(webapp2.RequestHandler):
+class CreatePage(BaseRequestHandler):
     def get(self):
-        template = JINJA_ENVIRONMENT.get_template('create.html')
-        self.response.write(template.render())
+        self.template_name = 'create.html'
+        self.complete_request()
 
     def post(self):
         logging.info(self.request.body)
@@ -75,29 +86,25 @@ class CreatePage(webapp2.RequestHandler):
         quiz.put()
 
 
-class QuizPage(webapp2.RequestHandler):
+class QuizPage(BaseRequestHandler):
     def get(self):
+        self.template_name = 'quizzes.html'
         quizzes = Quiz.query().fetch(10)
-        template_values = {
+        self.template_values = {
             'quizzes': quizzes
         }
-        
-        template = JINJA_ENVIRONMENT.get_template('quizzes.html')
-        self.response.write(template.render(template_values))
+        self.complete_request()
 
 
-class StartPage(webapp2.RequestHandler):
+class StartPage(BaseRequestHandler):
     def get(self):
+        self.template_name = 'start.html'
         quiz_key = self.request.get('key')
         quiz = Quiz.get_by_id(quiz_key)
         rand_code = random.randint(1000, 2000)
         quiz.code = rand_code
         quiz.put()
-        template_values = {
-        }
-        
-        template = JINJA_ENVIRONMENT.get_template('start.html')
-        self.response.write(template.render(template_values))
+        self.complete_request()
 
 
 class PresentAPI(webapp2.RequestHandler):
