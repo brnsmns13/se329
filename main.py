@@ -11,9 +11,6 @@ from google.appengine.ext import ndb
 from models import *
 
 
-USER = 'test_user@iastate.edu'
-
-
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(
         os.path.join(os.path.dirname(__file__), 'templates')),
@@ -31,11 +28,16 @@ class BaseRequestHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template(self.template_name)
         self.template_values.update({
             'login_url': users.create_login_url(self.request.uri),
-            'logout_url': users.create_logout_url(self.request.uri),
+            'logout_url': users.create_logout_url('/'),
             'user': users.get_current_user()
         })
         self.response.write(template.render(self.template_values))
 
+    def require_login(self):
+        user = users.get_current_user()
+        if not user:
+            self.redirect(users.create_login_url(self.request.uri))
+            return True
 
 
 class MainPage(BaseRequestHandler):
@@ -46,6 +48,9 @@ class MainPage(BaseRequestHandler):
 
 class ResponsePage(BaseRequestHandler):
     def get(self):
+        if self.require_login():
+            return
+
         self.template_name = 'respond.html'
         self.template_values = {
             'pin_default': 0
@@ -53,12 +58,14 @@ class ResponsePage(BaseRequestHandler):
         self.complete_request()
 
     def post(self):
+        if self.require_login():
+            return
+
         self.template_name = 'respond.html'
         pin = int(self.request.get('pin', -1))
         current_answer = self.request.get('answer')
 
         self.template_values = {
-            'username': USER,
             'pin_default': pin,
             'current_answer': current_answer
         }
@@ -67,11 +74,18 @@ class ResponsePage(BaseRequestHandler):
 
 class CreatePage(BaseRequestHandler):
     def get(self):
+        if self.require_login():
+            return
+
         self.template_name = 'create.html'
         self.complete_request()
 
     def post(self):
-        logging.info(self.request.body)
+        user = users.get_current_user()
+        if not user:
+            self.error(401)
+            return
+
         data = json.loads(self.request.body)
         quiz = Quiz()
         for q in data['questions']:
@@ -83,13 +97,18 @@ class CreatePage(BaseRequestHandler):
             quiz.questions.append(question)
 
         quiz.name = data['name']
+        quiz.userid = user.user_id()
         quiz.put()
 
 
 class QuizPage(BaseRequestHandler):
     def get(self):
+        if self.require_login():
+            return
+
+        user = users.get_current_user()
         self.template_name = 'quizzes.html'
-        quizzes = Quiz.query().fetch(10)
+        quizzes = Quiz.query(Quiz.userid == user.user_id()).fetch(10)
         self.template_values = {
             'quizzes': quizzes
         }

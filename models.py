@@ -18,3 +18,4 @@ class Quiz(ndb.Model):
     questions = ndb.StructuredProperty(Question, repeated=True)
     code = ndb.IntegerProperty(indexed=True)
     name = ndb.StringProperty(indexed=False)
+    userid = ndb.StringProperty(indexed=True)
