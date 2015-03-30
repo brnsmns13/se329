@@ -1,12 +1,10 @@
 import jinja2
 import json
-import logging
 import os
 import random
 import webapp2
 
 from google.appengine.api import users
-from google.appengine.ext import ndb
 
 from models import *
 
@@ -27,8 +25,8 @@ class BaseRequestHandler(webapp2.RequestHandler):
     def complete_request(self):
         template = JINJA_ENVIRONMENT.get_template(self.template_name)
         self.template_values.update({
-            'login_url': users.create_login_url(self.request.uri),
-            'logout_url': users.create_logout_url('/home'),
+            'login_url': users.create_login_url('/home'),
+            'logout_url': users.create_logout_url('/'),
             'user': users.get_current_user()
         })
 
@@ -81,10 +79,10 @@ class ResponsePage(BaseRequestHandler):
         if self.require_login():
             return
 
-        self.template_name = 'respond.html'
         pin = int(self.request.get('pin', -1))
         current_answer = self.request.get('answer')
 
+        self.template_name = 'respond.html'
         self.template_values = {
             'pin_default': pin,
             'current_answer': current_answer
@@ -128,8 +126,9 @@ class QuizPage(BaseRequestHandler):
             return
 
         user = users.get_current_user()
-        self.template_name = 'quizzes.html'
         quizzes = Quiz.query(Quiz.userid == user.user_id()).fetch(10)
+
+        self.template_name = 'quizzes.html'
         self.template_values = {
             'quizzes': quizzes
         }
@@ -142,12 +141,12 @@ class StartPage(BaseRequestHandler):
         if self.require_login():
             return
 
-        self.template_name = 'start.html'
-        quiz_key = self.request.get('key')
+        quiz_key = int(self.request.get('key'))
         quiz = Quiz.get_by_id(quiz_key)
-        rand_code = random.randint(1000, 2000)
-        quiz.code = rand_code
+        quiz.code = random.randint(1000, 2000)
         quiz.put()
+
+        self.template_name = 'start.html'
         self.complete_request()
 
 
