@@ -19,7 +19,7 @@
         <div class="col-md-4">
             <form method="post" action="/respond" id="response-form">
                 <label for="pin">Enter Quiz Pin</label>
-                <input name="pin" id="pin" class="form-control" type="number" value="{{pin_default}}">
+                <input name="pin" id="pin" class="form-control" type="number" value="{{ pin_default }}">
                 <hr>
                 <div class="btn-group-vertical" data-toggle="buttons">
 
@@ -40,8 +40,8 @@
             </form>
         </div>
         <div class="col-md-4">
-            <h4>Current User: {{username}}</h4>
-            <h4>Submitted Response: {{current_answer}}</h4>
+            <h4>Current User: {{ user.nickname() }}</h4>
+            <h4>Submitted Response: {{ current_answer }}</h4>
         </div>
     </div>
 {% endblock %}
