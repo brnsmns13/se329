@@ -28,9 +28,10 @@ class BaseRequestHandler(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template(self.template_name)
         self.template_values.update({
             'login_url': users.create_login_url(self.request.uri),
-            'logout_url': users.create_logout_url('/'),
+            'logout_url': users.create_logout_url('/home'),
             'user': users.get_current_user()
         })
+
         self.response.write(template.render(self.template_values))
 
     def require_login(self):
@@ -40,9 +41,27 @@ class BaseRequestHandler(webapp2.RequestHandler):
             return True
 
 
-class MainPage(BaseRequestHandler):
+class AboutPage(BaseRequestHandler):
     def get(self):
-        self.template_name = 'index.html'
+        self.template_name = 'about.html'
+        self.complete_request()
+
+
+class DashboardPage(BaseRequestHandler):
+    def get(self):
+        if self.require_login():
+            return
+
+        self.template_name = 'dashboard.html'
+        self.complete_request()
+
+
+class UserPage(BaseRequestHandler):
+    def get(self):
+        if self.require_login():
+            return
+
+        self.template_name = 'user.html'
         self.complete_request()
 
 
@@ -55,6 +74,7 @@ class ResponsePage(BaseRequestHandler):
         self.template_values = {
             'pin_default': 0
         }
+
         self.complete_request()
 
     def post(self):
@@ -69,6 +89,7 @@ class ResponsePage(BaseRequestHandler):
             'pin_default': pin,
             'current_answer': current_answer
         }
+
         self.complete_request()
 
 
@@ -112,11 +133,15 @@ class QuizPage(BaseRequestHandler):
         self.template_values = {
             'quizzes': quizzes
         }
+
         self.complete_request()
 
 
 class StartPage(BaseRequestHandler):
     def get(self):
+        if self.require_login():
+            return
+
         self.template_name = 'start.html'
         quiz_key = self.request.get('key')
         quiz = Quiz.get_by_id(quiz_key)
@@ -126,8 +151,11 @@ class StartPage(BaseRequestHandler):
         self.complete_request()
 
 
-class PresentAPI(webapp2.RequestHandler):
+class PresentAPI(BaseRequestHandler):
     def get(self):
+        if self.require_login():
+            return
+
         quiz_key = self.request.get('quiz')
         question_number = self.request.get('question')
         quiz = Quiz.get_by_id(quiz_key)
@@ -143,9 +171,11 @@ class PresentAPI(webapp2.RequestHandler):
 
 
 application = webapp2.WSGIApplication([
-    ('/', MainPage),
+    ('/', AboutPage),
+    ('/home', DashboardPage),
     ('/respond', ResponsePage),
     ('/create', CreatePage),
     ('/quizzes', QuizPage),
-    ('/start', StartPage)
+    ('/start', StartPage),
+    ('/user', UserPage)
 ], debug=True)
