@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    <hr>
+    <div class="col-md-4 col-md-offset-4">
+        <h3>Welcome {{ user.nickname() }}</h3>
+    </div>
+{% endblock %}
