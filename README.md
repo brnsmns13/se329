@@ -12,7 +12,7 @@
 | ---- | -------- | -------- | ----- | ----- |
 | Tyler Cobb | Systems Engineer | Tcobbs72 | tjcobb@iastate.edu | 612-963-1237 |
 | Robert Kloster | Project Manager | RobertKloster | rkloster@iastate.edu | 515-720-5986 |
-| William Park | Quality Control | wipark93 | blange@iastate.edu | 515-975-7491 |
+| William Park | Quality Control | wipark93 | wipark@iastate.edu | ??? |
 | Branden Lange | Tester & Integrator | CivBase | blange@iastate.edu | 515-975-7491 |
 | Brian Simons | Architect / Developer | brnsmns13 | bcsimons@iastate.edu | 319-651-0782 |
 
