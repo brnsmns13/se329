@@ -2,6 +2,10 @@
 
 {% block title %}Quizzes{% endblock %}
 
+{% block script %}
+    <script type="text/javascript" src="static/js/quiz.js"></script>
+{% endblock %}
+
 {% block content %}
     <h1>Quizzes</h1>
     <div class="row">
@@ -9,7 +13,7 @@
             <ul class="list-group">
                 {% for quiz in quizzes %}
                     <li class="list-group-item">
-                        <span class="badge">Start</span>
+                        <span class="badge" onClick="return displayQuiz({{ quiz.key.id() }}, 0)">Start</span>
                         {{quiz.name}}
                     </li>
                 {% endfor %}

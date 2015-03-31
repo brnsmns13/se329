@@ -95,3 +95,18 @@ function submitQuiz() {
     // If we let the post redirect then we can fix the reload error
     window.location.replace("/quizzes");
 }
+
+function displayQuiz(quiz_code, question_number){
+	redirect("/start?quiz=" + quiz_code + "&question=" + question_number, 'post');
+}
+
+function redirect(url, method) {
+    var form = $('<form>', {
+        method: method,
+        action: url
+    }).submit();
+}
+
+function endQuiz(){
+    window.location.replace("/quizzes");
+}

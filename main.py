@@ -136,39 +136,42 @@ class QuizPage(BaseRequestHandler):
 
         self.complete_request()
 
-
-class StartPage(BaseRequestHandler):
-    def get(self):
-        if self.require_login():
-            return
-
-        self.template_name = 'start.html'
-        quiz_key = self.request.get('key')
-        quiz = Quiz.get_by_id(quiz_key)
-        rand_code = random.randint(1000, 2000)
-        quiz.code = rand_code
-        quiz.put()
-        self.complete_request()
-
-
 class PresentAPI(BaseRequestHandler):
-    def get(self):
+    def post(self):
         if self.require_login():
             return
-
+            
+        self.template_name = 'start.html'
         quiz_key = self.request.get('quiz')
-        question_number = self.request.get('question')
-        quiz = Quiz.get_by_id(quiz_key)
-        try:
-            question = quiz.questions[int(question_number)]
+        quiz_key = int(quiz_key)
+        question_number = int(self.request.get('question'))
+        quiz = Quiz.get_by_id(quiz_key, parent=None)
+        
+        if question_number==0:
+            quiz.code = random.randint(1000,2000)
+            quiz.put()
+        
+        if question_number >= 0 and question_number < len(quiz.questions):
+            try:
+                question = quiz.questions[question_number]
+                question_number = question_number+1
 
-        except IndexError:
-            self.response.write('invalid question number')
+            except IndexError:
+                self.response.write('invalid question number')
+                return
+
+            self.template_values = {
+                'code' : quiz.code,
+                'quiz_key' : quiz_key,
+                'question' : question.question,
+                'answers' : question.answers,
+                'question_number' : question_number,
+                'total_questions' : len(quiz.questions)
+            }
+            
+            self.complete_request()
             return
-
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(question.dict))
-
+             
 
 application = webapp2.WSGIApplication([
     ('/', AboutPage),
@@ -176,6 +179,6 @@ application = webapp2.WSGIApplication([
     ('/respond', ResponsePage),
     ('/create', CreatePage),
     ('/quizzes', QuizPage),
-    ('/start', StartPage),
+    ('/start', PresentAPI),
     ('/user', UserPage)
 ], debug=True)
