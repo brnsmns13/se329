@@ -1,0 +1,15 @@
+language:
+  python
+
+python:
+  - "2.7"
+
+install:
+  "pip install -r requirements_dev.txt"
+
+branches:
+  only:
+    - master
+
+script:
+  - nosetests --with-gae --with-coverage --cover-erase --cover-min-percentage 99 --cover-package=.
