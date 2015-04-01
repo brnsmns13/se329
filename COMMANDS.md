@@ -10,7 +10,7 @@ Pip is the python package manager. All pip commands should be executed from the 
 Nose is a python library for executing unit tests.  All nosetests commands should be executed from the quiz/ (root) project directory.
 
 - `nosetests --config=.noserc` - Executes all python unit tests in the project.
-- `nosetests --with-coverage --cover-erase --cover-min-percentage 100 --cover-package=.` - Full command for executing nosetests with coverage.
+- `nosetests --with-gae --with-coverage --cover-erase --cover-min-percentage 100 --cover-package=.` - Full command for executing nosetests with coverage.
 
 
 # Git
