@@ -306,16 +306,80 @@ class StartPageTestCase(DatastoreBaseCase):
 
         self.quiz_key = Quiz(
             questions=[q1, q2],
-            code=None,
             name='Test Quiz',
             userid='test.user-ID').put()
 
         self.app = TestApp(application)
 
-    def test_get(self):
+    def test_post(self):
         self.login(**DatastoreBaseCase.DEFAULT_USER)
+        quiz_id = str(self.quiz_key.id())
 
-        self.app.get('/start?key=' + str(self.quiz_key.id()))
+        resp = self.app.post('/start?quiz=' + quiz_id)
 
-    def test_get_login_required(self):
-        self.app.get('/start?key=' + str(self.quiz_key.id()), status=302)
+        resp.mustcontain(
+            '<h1>Test Quiz</h1>',
+            '<p class="code">Code: 8675309</p>',
+            '<h3>Test Question 1</h3>',
+            '<p>A - First Answer</p>',
+            '<p>B - Second Answer</p>',
+            '<button class="btn btn-primary" onClick="'
+            'return displayQuiz({quiz_id}, 1)">Next Question'
+            '</button>'.format(quiz_id=quiz_id),
+            no=[
+                '<h3>Test Question 2</h3>',
+                '<p>A - An Answer</p>',
+                '<p>B - Another Answer</p>',
+                '<button class="btn btn-primary" onClick="'
+                'return endQuiz()">End Quiz</button>'
+            ]
+        )
+
+        result = self.quiz_key.get()
+        self.assertEqual(result.code, 8675309)
+
+    def test_post_with_question(self):
+        self.login(**DatastoreBaseCase.DEFAULT_USER)
+        quiz_id = str(self.quiz_key.id())
+
+        resp = self.app.post('/start?quiz=' + quiz_id + '&question=1')
+
+        resp.mustcontain(
+            '<h1>Test Quiz</h1>',
+            '<p class="code">Code: 8675309</p>',
+            '<h3>Test Question 2</h3>',
+            '<p>A - An Answer</p>',
+            '<p>B - Another Answer</p>',
+            '<button class="btn btn-primary" onClick="'
+            'return endQuiz()">End Quiz</button>',
+            no=[
+                '<h3>Test Question 1</h3>',
+                '<p>A - First Answer</p>',
+                '<p>B - Second Answer</p>',
+                '<button class="btn btn-primary" onClick="'
+                'return displayQuiz({quiz_id}, 1)">Next Question'
+                '</button>'.format(quiz_id=quiz_id)
+            ]
+        )
+
+        result = self.quiz_key.get()
+        self.assertEqual(result.code, 8675309)
+
+    def test_post_login_required(self):
+        self.app.post('/start?quiz=' + str(self.quiz_key.id()), status=302)
+
+    def test_error_bad_question(self):
+        self.login(**DatastoreBaseCase.DEFAULT_USER)
+        quiz_id = str(self.quiz_key.id())
+
+        resp = self.app.post('/start?quiz=' + quiz_id + '&question=100')
+
+        resp.mustcontain(
+            'invalid question number',
+            no=[
+                '<h1>Test Quiz</h1>',
+                '<p class="code">Code: 8675309</p>'
+            ])
+
+        result = self.quiz_key.get()
+        self.assertIsNone(result.code)

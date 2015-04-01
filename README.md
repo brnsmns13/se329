@@ -33,7 +33,7 @@
 - [NPM](https://www.npmjs.com/) - Javascript package manager (part of [NodeJS](http://nodejs.org/))
 
 ##### Python
-- [Google Appengine](https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction) - Web server framework
+- [Google App Engine](https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction) - Web server framework
 - [Jinja2](http://jinja.pocoo.org/docs/dev/) - HTML templating language for python
 - [pip](https://pip.pypa.io/en/latest/) - Python package manager
 - [webapp2](https://webapp-improved.appspot.com/) - Web server library/framework
@@ -68,13 +68,13 @@ For Windows users, you can do something similar by creating the file ~/quiz.bat 
 1. With your virtualenv activated, navigate to the quiz (root) directory.
 2. Install all pip requirements with `pip install -r requirements_dev`.
 
-### Appengine Setup
-1. Download and install the Appengine SDK form [here](https://cloud.google.com/appengine/downloads).
-2. Startup the newly-installed Appengine Launcher application and click the add button (plus icon in the bottom left).
+### App Engine Setup
+1. Download and install the App Engine SDK form [here](https://cloud.google.com/appengine/downloads).
+2. Startup the newly-installed App Engine Launcher application and click the add button (plus icon in the bottom left).
 3. Choose the se329 (root) project directory and click the "Create" button to add it to your list (it is named better-than-clickers-quiz-app).
 
 # Execution
-1. Open the Appengine Launcher, select the better-than-clickers-quiz-app application and then click the big green "Run" button in the top left of the window.
+1. Open the App Engine Launcher, select the better-than-clickers-quiz-app application and then click the big green "Run" button in the top left of the window.
 2. Click the "Browse" button at the top of the launcher window to open the app in your browser.
 
 # Contributing

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Quiz{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="static/js/present.js"></script>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .code {
+            display: block;
+            width: 100%;
+            padding: 10px 0px;
+            font-size: large;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <h1>{{ name }}</h1>
+    <div class="row">
+        <p class="code">Code: {{ code }}</p>
+        <h3>{{ question }}</h3>
+        <ul class="list-group">
+            {% for letter, answer in answers.iteritems() %}
+                <li class="list-group-item">
+                    <p>{{ letter }} - {{ answer }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if question_number != total_questions %}
+            <button class="btn btn-primary" onClick="return displayQuiz({{ quiz_id }}, {{ question_number }})">Next Question</button>
+        {% else %}
+            <button class="btn btn-primary" onClick="return endQuiz()">End Quiz</button>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -137,36 +137,37 @@ class QuizPage(BaseRequestHandler):
 
 
 class StartPage(BaseRequestHandler):
-    def get(self):
+    def post(self):
         if self.require_login():
             return
-
-        quiz_key = int(self.request.get('key'))
-        quiz = Quiz.get_by_id(quiz_key)
-        quiz.code = random.randint(1000, 2000)
-        quiz.put()
-
+            
         self.template_name = 'start.html'
-        self.complete_request()
+        quiz_id = int(self.request.get('quiz'))
+        question_number = int(self.request.get('question', 0))
+        quiz = Quiz.get_by_id(quiz_id, parent=None)
 
-
-class PresentAPI(BaseRequestHandler):
-    def get(self):
-        if self.require_login():
-            return
-
-        quiz_key = self.request.get('quiz')
-        question_number = self.request.get('question')
-        quiz = Quiz.get_by_id(quiz_key)
         try:
-            question = quiz.questions[int(question_number)]
+            question = quiz.questions[question_number]
 
         except IndexError:
             self.response.write('invalid question number')
             return
+        
+        if not quiz.code:
+            quiz.code = random.randint(1000, 2000)
+            quiz.put()
 
-        self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps(question.dict))
+        self.template_values = {
+            'name': quiz.name,
+            'code': quiz.code,
+            'quiz_id': quiz_id,
+            'question': question.question,
+            'answers': question.answers,
+            'question_number': question_number + 1,
+            'total_questions': len(quiz.questions)
+        }
+
+        self.complete_request()
 
 
 application = webapp2.WSGIApplication([
