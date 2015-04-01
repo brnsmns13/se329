@@ -1,12 +1,10 @@
 import jinja2
 import json
-import logging
 import os
 import random
 import webapp2
 
 from google.appengine.api import users
-from google.appengine.ext import ndb
 
 from models import *
 
@@ -27,8 +25,8 @@ class BaseRequestHandler(webapp2.RequestHandler):
     def complete_request(self):
         template = JINJA_ENVIRONMENT.get_template(self.template_name)
         self.template_values.update({
-            'login_url': users.create_login_url(self.request.uri),
-            'logout_url': users.create_logout_url('/home'),
+            'login_url': users.create_login_url('/home'),
+            'logout_url': users.create_logout_url('/'),
             'user': users.get_current_user()
         })
 
@@ -81,10 +79,10 @@ class ResponsePage(BaseRequestHandler):
         if self.require_login():
             return
 
-        self.template_name = 'respond.html'
         pin = int(self.request.get('pin', -1))
         current_answer = self.request.get('answer')
 
+        self.template_name = 'respond.html'
         self.template_values = {
             'pin_default': pin,
             'current_answer': current_answer
@@ -128,50 +126,49 @@ class QuizPage(BaseRequestHandler):
             return
 
         user = users.get_current_user()
-        self.template_name = 'quizzes.html'
         quizzes = Quiz.query(Quiz.userid == user.user_id()).fetch(10)
+
+        self.template_name = 'quizzes.html'
         self.template_values = {
             'quizzes': quizzes
         }
 
         self.complete_request()
 
-class PresentAPI(BaseRequestHandler):
+
+class StartPage(BaseRequestHandler):
     def post(self):
         if self.require_login():
             return
             
         self.template_name = 'start.html'
-        quiz_key = self.request.get('quiz')
-        quiz_key = int(quiz_key)
-        question_number = int(self.request.get('question'))
-        quiz = Quiz.get_by_id(quiz_key, parent=None)
-        
-        if question_number==0:
-            quiz.code = random.randint(1000,2000)
-            quiz.put()
-        
-        if question_number >= 0 and question_number < len(quiz.questions):
-            try:
-                question = quiz.questions[question_number]
-                question_number = question_number+1
+        quiz_id = int(self.request.get('quiz'))
+        question_number = int(self.request.get('question', 0))
+        quiz = Quiz.get_by_id(quiz_id, parent=None)
 
-            except IndexError:
-                self.response.write('invalid question number')
-                return
+        try:
+            question = quiz.questions[question_number]
 
-            self.template_values = {
-                'code' : quiz.code,
-                'quiz_key' : quiz_key,
-                'question' : question.question,
-                'answers' : question.answers,
-                'question_number' : question_number,
-                'total_questions' : len(quiz.questions)
-            }
-            
-            self.complete_request()
+        except IndexError:
+            self.response.write('invalid question number')
             return
-             
+        
+        if not quiz.code:
+            quiz.code = random.randint(1000, 2000)
+            quiz.put()
+
+        self.template_values = {
+            'name': quiz.name,
+            'code': quiz.code,
+            'quiz_id': quiz_id,
+            'question': question.question,
+            'answers': question.answers,
+            'question_number': question_number + 1,
+            'total_questions': len(quiz.questions)
+        }
+
+        self.complete_request()
+
 
 application = webapp2.WSGIApplication([
     ('/', AboutPage),
@@ -179,6 +176,6 @@ application = webapp2.WSGIApplication([
     ('/respond', ResponsePage),
     ('/create', CreatePage),
     ('/quizzes', QuizPage),
-    ('/start', PresentAPI),
+    ('/start', StartPage),
     ('/user', UserPage)
 ], debug=True)

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -12,21 +12,20 @@
 
         <div class="collapse navbar-collapse" id="nb">
             {% if user %}
-            <ul class="nav navbar-nav">
-                <li><a href="/home">Home</a></li>
-                <li><a href="/create">Create Quiz</a></li>
-                <li><a href="/respond">Respond</a></li>
-                <li><a href="/quizzes">View Quizzes</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/user">Welcome, {{ user.nickname() }}</a></li>
-                <li><a href="{{ logout_url }}">Logout</a></li>
-            </ul>
-
+                <ul class="nav navbar-nav">
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/create">Create Quiz</a></li>
+                    <li><a href="/respond">Respond</a></li>
+                    <li><a href="/quizzes">View Quizzes</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/user">Welcome, {{ user.nickname() }}</a></li>
+                    <li><a href="{{ logout_url }}">Logout</a></li>
+                </ul>
             {% else %}
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{{ login_url }}">Login</a></li>
-            </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ login_url }}">Login</a></li>
+                </ul>
             {% endif %}
         </div>
     </div>

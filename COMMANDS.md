@@ -1,9 +1,16 @@
 # Pip
 Pip is the python package manager. All pip commands should be executed from the se329/ (root) project directory with your virtual environment activated.
 
-- `pip install -r requirements.txt` - Installs python dependencies in the _active_ virtual environment according to se329/requirements.txt.
+- `pip install -r requirements_dev.txt` - Installs python dependencies in the _active_ virtual environment according to se329/requirements_dev.txt.
 - `pip uninstall <package>` - Uninstall a python dependency from the _active_ virtual environment.
 - `pip freeze` - List all installed python dependencies on the _active_ virtual environment.
+
+
+# Nosetests
+Nose is a python library for executing unit tests.  All nosetests commands should be executed from the quiz/ (root) project directory.
+
+- `nosetests --config=.noserc` - Executes all python unit tests in the project.
+- `nosetests --with-coverage --cover-erase --cover-min-percentage 100 --cover-package=.` - Full command for executing nosetests with coverage.
 
 
 # Git

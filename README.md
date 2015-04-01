@@ -33,7 +33,7 @@
 - [NPM](https://www.npmjs.com/) - Javascript package manager (part of [NodeJS](http://nodejs.org/))
 
 ##### Python
-- [Google Appengine](https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction) - Web server framework
+- [Google App Engine](https://cloud.google.com/appengine/docs/python/gettingstartedpython27/introduction) - Web server framework
 - [Jinja2](http://jinja.pocoo.org/docs/dev/) - HTML templating language for python
 - [pip](https://pip.pypa.io/en/latest/) - Python package manager
 - [webapp2](https://webapp-improved.appspot.com/) - Web server library/framework
@@ -51,15 +51,30 @@
 2. Download and install Python 2.7 from [here](https://www.python.org/downloads/). It is important to get Python 2.7 and not Python 3.4.
 3. Download and install the python package manager "pip" from [here](https://pip.pypa.io/en/latest/installing.html). If you have Python 2.7.9 or higher, pip will already be installed with python and this step can be skipped.
 4. Add python and pip to your "Path" system environment variable. On Windows, open the system environment variables dialog and, for a standard Python 2.7.9 installation, you can just append `;C:\Python27\;C:\Python27\Scripts` to the end of the existing value (restart any terminals for it to take effect). On a UNIX machine, just add the lines `export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH"` and `export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin/pip:$PATH"` to your ~/.bash_profile file (restart any terminals for it to take effect).
-5. Check out COMMANDS.md for more information on python and pip commands.
+5. Install the virtualenv package using `pip install virtualenv`. This package allows you to create virtual environments, which make package management between projects easy. Without an active virtual environment, your python packages are added to your base system installation of python, which is messy and dangerous on Linux machines. For more on virtualenv, [check this out](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
+6. Create a virtualenv directory (I recommend ~/virtualenvs) and, from within that directory, create a new virtual environment for this project with `virtualenv quiz`. Activate the new environment from this directory with `source quiz/bin/activate` or `source quiz/Scripts/activate` on Windows. Always make sure your environment is activated when installing packages (`pip install <package_name>` or `pip install -r <file>` when installing from a text file). The virtual environment can be deactivated any time with `deactivate`.
+7. Check out COMMANDS.md for more information on python and pip commands.
 
-### Appengine Setup
-1. Download and install the Appengine SDK form [here](https://cloud.google.com/appengine/downloads).
-2. Startup the newly-installed Appengine Launcher application and click the add button (plus icon in the bottom left).
+On a UNIX machine, I recommend putting an alias like this in your ~/.bash_profile file so that you can activate your virtualenv from anywhere with the `quiz` command.
+
+    alias quiz="cd ~/workspace/quiz && source ~/virtualenvs/quiz/bin/activate"
+
+For Windows users, you can do something similar by creating the file ~/quiz.bat and adding the below code. Activate it from anywhere with `source ~/quiz.bat` in Git Bash.
+
+    source ~/virtualenvs/quiz/Scripts/activate
+    cd ~/workspace/quiz
+
+### Requirements
+1. With your virtualenv activated, navigate to the quiz (root) directory.
+2. Install all pip requirements with `pip install -r requirements_dev`.
+
+### App Engine Setup
+1. Download and install the App Engine SDK form [here](https://cloud.google.com/appengine/downloads).
+2. Startup the newly-installed App Engine Launcher application and click the add button (plus icon in the bottom left).
 3. Choose the se329 (root) project directory and click the "Create" button to add it to your list (it is named better-than-clickers-quiz-app).
 
 # Execution
-1. Open the Appengine Launcher, select the better-than-clickers-quiz-app application and then click the big green "Run" button in the top left of the window.
+1. Open the App Engine Launcher, select the better-than-clickers-quiz-app application and then click the big green "Run" button in the top left of the window.
 2. Click the "Browse" button at the top of the launcher window to open the app in your browser.
 
 # Contributing

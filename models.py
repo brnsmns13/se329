@@ -19,3 +19,12 @@ class Quiz(ndb.Model):
     code = ndb.IntegerProperty(indexed=True)
     name = ndb.StringProperty(indexed=False)
     userid = ndb.StringProperty(indexed=True)
+
+    @property
+    def dict(self):
+        return {
+            'questions': [q.dict for q in self.questions],
+            'code': self.code,
+            'name': self.name,
+            'userid': self.userid
+        }

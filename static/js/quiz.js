@@ -1,4 +1,3 @@
-
 var quizName = '';
 var questions = [];
 var answerIDs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -38,19 +37,19 @@ function addAnswer() {
     return false;
 }
 
-function addQuestion() {
+function submitQuestion() {
     // Pull the inputs from the document
-	var questionField = $('#question');
+    var questionField = $('#question');
     var question = questionField.val();
 
     var answers = {};
     var answerList = $('#answer-list');
-	answerList.find('.answer').each(function(index, field) {
+    answerList.find('.answer').each(function(index, field) {
         answers[answerIDs[index]] = $(field).val();
     });
 
     var correctList = $('#answer-selector');
-	var correctField = correctList.find(
+    var correctField = correctList.find(
         "input:radio[name ='correct-answer']:checked");
 
     var correct = correctField.val();
@@ -64,7 +63,15 @@ function addQuestion() {
         answers: answers,
         correctAnswer: correct
     };
-	questions.push(newQuestion);
+    questions.push(newQuestion);
+    return true;
+}
+
+function addQuestion() {
+    var success = submitQuestion();
+    if (!success) {
+        return false;
+    }
 
     // Add question title to list for user
     var qList = document.getElementById('question-list');
@@ -85,28 +92,18 @@ function addQuestion() {
 }
 
 function submitQuiz() {
-	var data = {
-		"questions" : questions,
+    var success = submitQuestion();
+    if (!success) {
+        return false;
+    }
+
+    var data = {
+        "questions" : questions,
         "name": quizName
-	};
-	
-	$.post("/create", JSON.stringify(data));
+    };
+
+    $.post("/create", JSON.stringify(data));
 
     // If we let the post redirect then we can fix the reload error
-    window.location.replace("/quizzes");
-}
-
-function displayQuiz(quiz_code, question_number){
-	redirect("/start?quiz=" + quiz_code + "&question=" + question_number, 'post');
-}
-
-function redirect(url, method) {
-    var form = $('<form>', {
-        method: method,
-        action: url
-    }).submit();
-}
-
-function endQuiz(){
     window.location.replace("/quizzes");
 }
